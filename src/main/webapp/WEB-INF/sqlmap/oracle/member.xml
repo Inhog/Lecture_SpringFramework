@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 여러개로 분리했을 때 구별하기위한 prefix 같은 느낌이라고 생각하면 됨. -->
+<mapper namespace="member">
+	<!-- 위해서 namespace로 구분하고 그 다음 구분하는 부분이 id -->
+	<!-- list를 호출하려면 MEMBER.list -->
+	<select id="list" resultType="Map" parameterType="Map"
+		timeout="10">
+		SELECT
+		MEMBER_SEQ,
+		MEMBER_ID,
+		NAME,
+		CELLPHONE,
+		EMAIL
+		FROM CIP_MEMBER
+	</select>
+
+	<select id="check" resultType="Map" parameterType="Map"
+		timeout="10">
+		SELECT
+		MEMBER_SEQ
+		FROM CIP_MEMBER
+		WHERE MEMBER_SEQ = #{MEMBER_SEQ}
+	</select>
+
+	<select id="read" resultType="Map" parameterType="Map"
+		timeout="10">
+		SELECT
+		MEMBER_ID,
+		PASSWORD,
+		NAME,
+		EMAIL,
+		CELLPHONE,
+		MEMBER_SEQ
+		FROM CIP_MEMBER
+		WHERE MEMBER_SEQ = #{MEMBER_SEQ}
+	</select>
+
+<insert id="insert" parameterType="Map">
+    INSERT INTO CIP_MEMBER(MEMBER_SEQ, MEMBER_ID, PASSWORD, NAME, EMAIL, CELLPHONE, REGISTER_SEQ, REGISTRY_DATE, MODIFIER_SEQ, MODIFY_DATE, ORGANIZATION_SEQ)
+    VALUES(#{MEMBER_SEQ}
+          ,#{MEMBER_ID}
+          ,#{PASSWORD}
+          ,#{NAME}
+          ,#{EMAIL}
+          ,#{CELLPHONE}
+          ,#{REGISTER_SEQ}
+          ,sysdate
+          ,#{MODIFIER_SEQ}
+          ,sysdate
+          ,#{ORGANIZATION_SEQ})
+    </insert>
+
+	<delete id="delete" parameterType="Map">
+		delete
+		from CIP_MEMBER
+		where MEMBER_SEQ = #{MEMBER_SEQ}
+	</delete>
+
+	<update id="update" parameterType="Map">
+		UPDATE
+		CIP_MEMBER
+		SET NAME
+		= #{NAME}
+		,CELLPHONE = #{CELLPHONE}
+		,EMAIL = #{EMAIL}
+		,MEMBER_ID = #{MEMBER_ID}
+		WHERE
+		MEMBER_SEQ = #{MEMBER_SEQ}
+	</update>
+
+	<!--<insert id="merge" parameterType="Map"> </insert> -->
+
+
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 여러개로 분리했을 때 구별하기위한 prefix 같은 느낌이라고 생각하면 됨. -->
+<mapper namespace="organization">
+	<!-- 위해서 namespace로 구분하고 그 다음 구분하는 부분이 id -->
+	<!-- list를 호출하려면 organization.list -->
+	<select id="list" resultType="Map" parameterType="Map" timeout="10">
+		SELECT 
+            ORGANIZATION_SEQ,
+            NAME,
+            TELEPHONE,
+            ORDER_NUMBER,
+            PARENT_ORGANIZATION_SEQ    
+        FROM CIP_ORGANIZATION
+	</select>
+	
+	<select id="check" resultType="Map" parameterType="Map" timeout="10">
+		SELECT 
+            ORGANIZATION_SEQ
+        FROM CIP_ORGANIZATION
+        WHERE ORGANIZATION_SEQ = #{ORGANIZATION_SEQ}
+	</select>
+	
+	
+
+	<select id="read" resultType="com.clustering.project.javabean.OrganizationBean" parameterType="com.clustering.project.javabean.OrganizationBean" timeout="10">
+		SELECT 
+            ORGANIZATION_SEQ,
+            NAME,
+            TELEPHONE,
+            ORDER_NUMBER,
+            PARENT_ORGANIZATION_SEQ    
+        FROM CIP_ORGANIZATION
+        WHERE ORGANIZATION_SEQ = #{ORGANIZATION_SEQ}
+	</select>
+
+	<insert id="insert" parameterType="Map">
+		INSERT
+			INTO CIP_ORGANIZATION(
+            ORGANIZATION_SEQ,
+            NAME,
+            TELEPHONE,
+            ORDER_NUMBER,
+            PARENT_ORGANIZATION_SEQ   
+			)
+			values(
+			#{ORGANIZATION_SEQ}
+			,#{NAME}
+            ,#{TELEPHONE}
+            ,#{ORDER_NUMBER}
+            ,#{PARENT_ORGANIZATION_SEQ}   
+			)
+	</insert>
+	
+	<delete id="delete" parameterType="Map">
+		delete 
+		from CIP_ORGANIZATION
+		where ORGANIZATION_SEQ = #{ORGANIZATION_SEQ}
+	</delete>
+	
+	
+	<delete id="delete_key" parameterType="Map">
+		delete
+		from CIP_ORGANIZATION
+		where PARENT_ORGANIZATION_SEQ = #{ORGANIZATION_SEQ}
+	</delete>
+	
+	<update id="update" parameterType="Map">
+		UPDATE
+		CIP_ORGANIZATION
+		SET NAME = #{NAME}
+		,TELEPHONE = #{TELEPHONE}
+		,ORDER_NUMBER = #{ORDER_NUMBER}
+		,PARENT_ORGANIZATION_SEQ = #{PARENT_ORGANIZATION_SEQ}
+		WHERE ORGANIZATION_SEQ = #{ORGANIZATION_SEQ}
+	</update>
+	
+<!--<insert id="merge" parameterType="Map">
+	</insert>	-->
+
+
+</mapper>
